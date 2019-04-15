@@ -10,7 +10,7 @@ First, start R - on Linux you may want to give sudo access to allow the installa
 
   sudo RThen, to install packages type::
 
-  install.packages(c("ggplot2", "scales", "gridExtra", "reshape"))You may then have to select a 'mirror' site for the download. Once complete, you can type q() to exit R.Installing NanoOK-----------------NanoOK works best on Linux and MacOS. If you need to use Windows, some tips are provided below, but installation of the dependencies is not as straightforward as on Linux and Mac OS.NanoOK can be downloaded from TGAC's GitHub repository. You can either download the .zip file, or if you have git installed, you can type::
+  install.packages(c("ggplot2", "scales", "gridExtra", "reshape"))You may then have to select a 'mirror' site for the download. Once complete, you can type q() to exit R.Installing NanoOK-----------------NanoOK works best on Linux and MacOS. If you need to use Windows, some tips are provided below, but installation of the dependencies is not as straightforward as on Linux and Mac OS.NanoOK can be downloaded from GitHub. You can either download the .zip file, or if you have git installed, you can type::
   git clone https://github.com/TGAC/NanoOK.gitTo install:
 1. Copy the whole NanoOK directory somewhere appropriate on your system.2. Set a NANOOK_DIR environment variable to point to this directory. This enables NanoOK to know where to find the Java JARs and R scripts it uses. On Linux or MacOS, you would typically do this by adding the following command to your .bash_profile (or .profile on Ubuntu) file or 'source' script::   
      export NANOOK_DIR=/path/to/NanoOK   On MacOs, you can edit the file using::   

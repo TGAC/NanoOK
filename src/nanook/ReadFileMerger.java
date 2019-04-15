@@ -66,13 +66,15 @@ public class ReadFileMerger {
                     
                     try {
                         PrintWriter pw = new PrintWriter(new FileWriter(outputPathname));
+                        
                         for (int i=0; i<readFiles[pf][type].size(); i++) {
                             BufferedReader br = new BufferedReader(new FileReader(readFiles[pf][type].get(i)));
-                            String line;                
+                            String line;
                             while ((line = br.readLine()) != null) {
                                 pw.println(line);
                             }
                             br.close();
+                            
                         }
                         pw.close();
                     } catch (IOException e) {

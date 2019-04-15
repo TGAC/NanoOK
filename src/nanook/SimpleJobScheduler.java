@@ -17,10 +17,20 @@ public class SimpleJobScheduler {
         maxJobs = m;
         options = o;
         schedulerLog.open(o.getLogsDir()+File.separator+"scheduler.txt");
+        if (options.isNedome()) {
+            maxJobs = 1;
+        }
     }
     
     public int submitJob(String[] commands, String logFilename) {
         SimpleJobSchedulerJob j = new SimpleJobSchedulerJob(jobId, commands, logFilename);
+        pendingJobs.add(j);
+        schedulerLog.println("Submitted job\t"+jobId+"\t"+j.getCommand());
+        return jobId++;
+    }
+
+    public int submitJob(String[] commands, String logFilename, String errorFilename) {
+        SimpleJobSchedulerJob j = new SimpleJobSchedulerJob(jobId, commands, logFilename, errorFilename);
         pendingJobs.add(j);
         schedulerLog.println("Submitted job\t"+jobId+"\t"+j.getCommand());
         return jobId++;
@@ -32,6 +42,19 @@ public class SimpleJobScheduler {
             SimpleJobSchedulerJob j = runningJobs.get(i);
             if (j.hasFinished()) {
                 schedulerLog.println("Finished job\t" +j.getId() + "\t" + j.getCommand());
+                
+                if (options.isNedome()) {
+                    String completedFile = j.getLog() + ".completed";
+                    File f = new File(completedFile);
+                    try {
+                        f.createNewFile();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    
+                    options.updateNedome();
+                }
+                
                 runningJobs.remove(i);
                 finishedJobs.add(j);
             }

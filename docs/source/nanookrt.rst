@@ -13,6 +13,23 @@ The RT functionality should be considered alpha software. As such, it
 only supports the SLURM scheduler, via the supplied slurmit script. We
 plan to provide support for other schedulers in the near future.
 
+Installing NanoOK RT
+--------------------
+NanoOK RT is included within the core NanoOK software. However, if you are only using NanoOK RT, you do not need to install all the dependencies. Please make sure you have installed the following:
+
+1. `HDF5 tools <https://www.hdfgroup.org/products/hdf5_tools/>`_ - are required for extracting FASTA/Q from FAST5 files.
+2. `BLAST <https://www.st-va.ncbi.nlm.nih.gov/blast/Blast.cgi?CMD=Web&PAGE_TYPE=BlastDocs&DOC_TYPE=Download>`_ and a suitable database.
+
+If using Mac OS, these can easily be installed with `Homebrew <https://brew.sh/>`_. On Linux, you can use a package manager.
+
+NanoOK can be downloaded from GitHub. You can either download the .zip file, or if you have git installed, you can type::
+  git clone https://github.com/TGAC/NanoOK.git
+
+To install:
+1. Copy the whole NanoOK directory somewhere appropriate on your system.2. Set a NANOOK_DIR environment variable to point to this directory. This enables NanoOK to know where to find the Java JARs and R scripts it uses. On Linux or MacOS, you would typically do this by adding the following command to your .bash_profile (or .profile on Ubuntu) file or 'source' script::   
+     export NANOOK_DIR=/path/to/NanoOK   On MacOs, you can edit the file using::   
+     open -e ~/.bash_profile3. Add the bin directory to your PATH variable. On Linux, you would typically do this by adding the following command to your .bash_profile (or .profile on Ubuntu) file or 'source' script::     export PATH=/path/to/NanoOK/bin:$PATH4. You may have to reset for the change to take effect.5. Set Java heap size for the tool - the main JAVA program is packaged as a .jar file. A wrapper script called nanook (in the bin directory) enables this to be run without specifying the Java Virtual Machine parameters. By default, this script request 2Gb of RAM for the Java heap. If you wish to reduce/increase this, please edit this file.
+
 Running NanoOK RT
 -----------------
 

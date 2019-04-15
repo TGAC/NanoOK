@@ -25,7 +25,7 @@ import java.util.concurrent.ThreadPoolExecutor;
  * @author Richard Leggett
  */
 public class NanoOK {
-    public final static String VERSION_STRING = "v1.39";
+    public final static String VERSION_STRING = "v1.42";
     public final static long SERIAL_VERSION = 3L;
     
     /**
@@ -394,6 +394,10 @@ public class NanoOK {
         if (!logsDir.exists()) {
             logsDir.mkdir();
         }
+        
+        //NedomeProcessor np = new NedomeProcessor(options);
+        //np.run();
+        //System.exit(1);
         
         
         if (options.getRunMode() == NanoOKOptions.MODE_EXTRACT) {

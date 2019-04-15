@@ -7,6 +7,7 @@ public class SimpleJobSchedulerJob {
     private String[] commands;
     private Process process;
     private String logFilename;
+    private String errorFilename = null;
     private int jobId;
     
     public SimpleJobSchedulerJob(int i, String[] c, String l) {
@@ -14,13 +15,25 @@ public class SimpleJobSchedulerJob {
         commands = c;
         logFilename = l;
     }
-   
+    
+    public SimpleJobSchedulerJob(int i, String[] c, String l, String e) {
+        jobId = i;
+        commands = c;
+        logFilename = l;
+        errorFilename = e;
+    }
+
     public void run() {
         try {
-            File log = new File(logFilename);            
             ProcessBuilder pb = new ProcessBuilder(commands);
-            pb.redirectErrorStream(true);
-            pb.redirectOutput(Redirect.appendTo(log));
+    
+            if (errorFilename == null) {
+                pb.redirectErrorStream(true);
+            } else {
+                pb.redirectErrorStream(false);
+                pb.redirectError(new File(errorFilename));
+            }
+            pb.redirectOutput(Redirect.appendTo(new File(logFilename)));
             process = pb.start();
             //process = Runtime.getRuntime().exec(this.getCommand());
         } catch (Exception e) {
@@ -53,4 +66,5 @@ public class SimpleJobSchedulerJob {
     public String getLog() {
         return logFilename;
     }
+
 }

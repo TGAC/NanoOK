@@ -3,7 +3,7 @@
 Running NanoOK
 ==============
 
-**Note about Albacore FASTQ output:** We are currently working on support for the Albacore FASTQ output structure, but this is not yet ready. In the meantime, the easiest approach is to use Albacore fast5 output, followed by nanook extract. This also lets you filter your reads according to a minimum quality threshold. Alternatively, you can run nanook_split_reads (see `nanook_split_reads`_) in order to split to separate FASTQ/FASTA files before running nanook align.
+**Note about multi-read FAST5, FASTA, FASTQ:** Currently, multi-read FAST5 files cannot be processed by nanook extract. Multi-read FASTA/Q files cannot be processed natively by NanoOK yet, but you can use the multi_to_chunk_dirs.pl script to convert a multi-read FASTA/Q file into single read files that NanoOK align and analyse can process. See the `Multi-read files`_ section at the end of the page.
 
 Overview
 --------
@@ -289,23 +289,13 @@ supported aligners:
 | GraphMap                             | ""                                   |
 +--------------------------------------+--------------------------------------+
 
-nanook_split_reads
-------------------
+Multi-read files
+----------------
 
 If you don’t have individual read files, but they are merged into a single
-FASTA/Q, NanoOK currently cannot process them. However, you can use
-``nanook_split_reads.pl`` to split them into separate files, for example::
+FASTA/Q file, NanoOK currently cannot process them. However, as a temporary fix,
+we provide a script called ``multi_to_chunk_dirs.pl`` for you to split multiple FASTA/Q  files, for example::
 
-  nanook_split_reads.pl -i input.fasta -o outputdir
-
-Additionally, you will need to place your files within the directory
-structure expected by NanoOK, e.g.::
-
-  mkdir -p fasta/pass/2D
-  nanook_split_reads.pl -i all_2D.fasta -o fasta/pass/2D
-
-**If at all possible, use NanoOK to do the extraction as well - you are
-far less likely to run into problems with the align and analyse
-steps.**
+  multi_to_chunk_dirs.pl -in input.fasta -out sampledir/fasta/pass/Template
 
  

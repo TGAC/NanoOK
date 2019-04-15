@@ -131,16 +131,16 @@ public class FastAQBlastMerger implements Runnable {
         
         try {
             PrintWriter pw = new PrintWriter(new FileWriter(mergedFile));
-            
-            for (int i=0; i<listOfFiles.size(); i++) {                
+
+            for (int i=0; i<listOfFiles.size(); i++) {
                 BufferedReader br = new BufferedReader(new FileReader(listOfFiles.get(i)));
                 String line;                
                 while ((line = br.readLine()) != null) {
                     pw.println(line);
                 }
                 br.close();
-            }            
-            pw.close();            
+            }
+            pw.close();
         } catch (IOException e) {
             System.out.println("mergeFiles exception");
             e.printStackTrace();

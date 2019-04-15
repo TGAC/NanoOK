@@ -7,7 +7,9 @@
 
 package nanook;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -212,6 +214,41 @@ public class ReadProcessorRunnable implements Runnable {
         }
     }
     
+    public void runConvertFastQ(String fastqPathname) {
+        File f = new File(fastqPathname);
+        String fastqLeafname = f.getName();
+        String fastaPathname = options.getFastaDir() + "_chunks/"+fastqLeafname.substring(0,fastqLeafname.lastIndexOf('.'))+".fasta";
+        options.getLog().println("Converting "+fastqPathname);        
+        options.getLog().println("        to "+fastaPathname);
+        try {
+            String header;
+            PrintWriter pw = new PrintWriter(new FileWriter(fastaPathname));        
+            BufferedReader br = new BufferedReader(new FileReader(fastqPathname));
+            while ((header = br.readLine()) != null) {
+                if (header.startsWith("@")) {
+                    String seq = br.readLine();
+                    String plus = br.readLine();
+                    String qual = br.readLine();
+                    if (plus.equals("+")) {
+                        pw.println(">"+header.substring(1));
+                        pw.println(seq);
+                    } else {
+                        System.out.println("ERROR: Badly formatted FASTQ entry in "+fastqPathname);
+                    }
+                } else {
+                    System.out.println("ERROR: Badly formatted FASTQ file: "+fastqPathname);
+                }
+            }
+            br.close();
+            pw.close();
+        } catch (IOException e) {
+            System.out.println("runConvertFastQ exception");
+            e.printStackTrace();
+        }
+        
+        options.getBlastHandler(NanoOKOptions.TYPE_TEMPLATE, NanoOKOptions.READTYPE_PASS).addReadChunk(fastaPathname);
+    }
+    
     public void addToBlast(String fastaqPathname, int type) {
         int pf = NanoOKOptions.READTYPE_PASS;
         
@@ -357,6 +394,10 @@ public class ReadProcessorRunnable implements Runnable {
                         runExtract(nextPathname, pf);
                     } else {
                         options.getLog().println("Invalid "+nextPathname);
+                    }
+                } else if (options.isConvertingFastQ()) {
+                    if (nextPathname.toLowerCase().endsWith(".fastq")) {
+                        runConvertFastQ(nextPathname);
                     }
                 } else if (options.isAligningRead()) {
                     if (nextPathname.toLowerCase().endsWith(".fasta") || 

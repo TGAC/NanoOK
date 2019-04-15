@@ -175,6 +175,21 @@ public class ReadProcessor {
             }
         }
     }
+    
+    private void addDirsForConvertFastQ() {
+        String fastQConvertDir = options.getFastQConvertDir();
+        String processDir;
+        
+        if ((fastQConvertDir.startsWith("~/")) || (fastQConvertDir.startsWith("/"))) {
+            processDir = fastQConvertDir;
+        } else {
+            processDir = options.getSampleDirectory() + "/" + fastQConvertDir;
+        }
+        
+        System.out.println("FASTQ convert dir: " + processDir);
+        
+        processDirectory(processDir, false, true, NanoOKOptions.READTYPE_PASS);
+    }
 
     private void addDirsForParse() {
         // If using batch dirs, then we go sample/last/2D/pass/batch_XXX
@@ -224,6 +239,7 @@ public class ReadProcessor {
         String baseDir = "";
         
         options.getLog().println("extractingReads: "+options.isExtractingReads());
+        options.getLog().println("convertingFastQ: "+options.isConvertingFastQ());
         options.getLog().println("aligningReads: "+options.isAligningRead());
         options.getLog().println("parsingReads: "+options.isParsingRead());
         options.getLog().println("blastingReads: "+options.isBlastingRead());
@@ -231,6 +247,8 @@ public class ReadProcessor {
         if (options.isExtractingReads()) {
             options.getSampleChecker().checkFast5Directory();
             addDirsForExtract();
+        } else if (options.isConvertingFastQ()) {
+            addDirsForConvertFastQ();
         } else if (options.isAligningRead()) {
             options.getSampleChecker().checkReadDirectory();
             addDirsForAlign();

@@ -25,6 +25,10 @@ NanoOK Reporter relies on taxonomy information from NCBI, which you will need to
   export NANOOK_TAXONOMY=/path/to/dirOn MacOs, you can edit the file using::   
   open -e ~/.bash_profile
 
+You will also need to set another variable NANOOK_CARD to point to the directory containing the card files such as aro.csv::
+
+  export NANOOK_CARD=/path/to/dir
+
 Once you have done this, you can run the program as follows::
 
   cd NanoOKReporter
